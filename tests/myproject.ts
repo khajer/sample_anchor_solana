@@ -18,8 +18,8 @@ describe("myproject", () => {
     }).signers([myAccount]).rpc();
 
     console.log("Your transaction signature", tx);
-    const myAcc = program.account.myAccount.fetch(myAccount.publicKey);
-    console.log((await myAcc).data);
+    const myAcc = await program.account.myAccount.fetch(myAccount.publicKey);
+    console.log((myAcc).data);
 
   });
   it("test sayhi() rpc", async () => {
@@ -32,8 +32,8 @@ describe("myproject", () => {
     }).rpc();
     console.log("Your transaction signature", tx);
 
-    const myAcc = program.account.myAccount.fetch(myAccount.publicKey);
-    console.log((await myAcc).data);
+    const myAcc = await program.account.myAccount.fetch(myAccount.publicKey);
+    console.log((myAcc).data);
 
   })
 });
