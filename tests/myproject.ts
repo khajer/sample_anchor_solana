@@ -12,11 +12,14 @@ describe("myproject", () => {
   const program = anchor.workspace.Myproject as Program<Myproject>;
 
   it("Is initialized!", async () => {
-    const tx = await program.methods.initialize(new anchor.BN(12345)).accounts({
+    const tx = await program.methods.initialize(new anchor.BN(132312321)).accounts({
       newAccount: myAccount.publicKey,
       signer: provider.wallet.publicKey
     }).signers([myAccount]).rpc();
+
     console.log("Your transaction signature", tx);
+    const myAcc = program.account.myAccount.fetch(myAccount.publicKey);
+    console.log((await myAcc).data);
 
   });
   it("test sayhi() rpc", async () => {
@@ -28,5 +31,9 @@ describe("myproject", () => {
       acc: myAccount.publicKey
     }).rpc();
     console.log("Your transaction signature", tx);
+
+    const myAcc = program.account.myAccount.fetch(myAccount.publicKey);
+    console.log((await myAcc).data);
+
   })
 });

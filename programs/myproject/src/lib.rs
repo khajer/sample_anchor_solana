@@ -18,6 +18,11 @@ pub mod myproject {
     pub fn send_account(_ctx: Context<SetAcc>) -> Result<()> {
         Ok(())
     }
+
+    pub fn set_data(ctx: Context<SetData>, number: u32) -> Result<()> {
+        ctx.accounts.new_account.data = number as u64;
+        Ok(())
+    }
 }
 #[derive(Accounts)]
 pub struct SetAcc<'info> {
