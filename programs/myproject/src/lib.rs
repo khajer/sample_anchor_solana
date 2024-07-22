@@ -15,6 +15,14 @@ pub mod myproject {
         msg!("pass number : {}", number);
         Ok(())
     }
+    pub fn send_account(_ctx: Context<SetAcc>) -> Result<()> {
+        Ok(())
+    }
+}
+#[derive(Accounts)]
+pub struct SetAcc<'info> {
+    #[account(mut)]
+    pub acc: Account<'info, MyAccount>,
 }
 
 #[derive(Accounts)]

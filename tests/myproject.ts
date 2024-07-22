@@ -21,6 +21,12 @@ describe("myproject", () => {
   });
   it("test sayhi() rpc", async () => {
     const tx = await program.methods.sayHello(1111).rpc();
-    console.log(tx);
+    console.log("Your transaction signature", tx);
+  })
+  it("test send_account() ", async () => {
+    const tx = await program.methods.sendAccount().accounts({
+      acc: myAccount.publicKey
+    }).rpc();
+    console.log("Your transaction signature", tx);
   })
 });
