@@ -23,6 +23,12 @@ pub mod myproject {
         ctx.accounts.new_account.data = number as u64;
         Ok(())
     }
+    pub fn add_todo(ctx: Context<Todo>, task: String) -> Result<()> {
+        let todolist = &mut ctx.accounts.todolist;
+        todolist.item.push(task);
+
+        Ok(())
+    }
 }
 #[derive(Accounts)]
 pub struct SetAcc<'info> {
@@ -46,4 +52,16 @@ pub struct SetData<'info> {
 #[derive(Default)]
 pub struct MyAccount {
     data: u64,
+}
+
+#[derive(Accounts)]
+pub struct Todo<'info> {
+    #[account(mut)]
+    pub todolist: Account<'info, ToDoList>,
+}
+
+#[account]
+#[derive(Default)]
+pub struct ToDoList {
+    item: Vec<String>,
 }
