@@ -8,6 +8,9 @@ pub mod myproject {
 
     pub fn initialize(ctx: Context<SetData>, data: u64) -> Result<()> {
         ctx.accounts.new_account.data = data;
+        // ctx.accounts.new_account.item = data;
+        // ctx.accounts.new_account.item = vec![];
+
         msg!("Greetings from: {:?} , {:?}", ctx.program_id, data);
         Ok(())
     }
@@ -23,9 +26,9 @@ pub mod myproject {
         ctx.accounts.new_account.data = number as u64;
         Ok(())
     }
-    pub fn add_todo(ctx: Context<Todo>, task: String) -> Result<()> {
-        let todolist = &mut ctx.accounts.todolist;
-        todolist.item.push(task);
+    pub fn add_todo(ctx: Context<AddItem>, task: String) -> Result<()> {
+        let todo_account = &mut ctx.accounts.acc;
+        todo_account.items.push(task);
 
         Ok(())
     }
@@ -41,7 +44,7 @@ pub struct HiData {}
 
 #[derive(Accounts)]
 pub struct SetData<'info> {
-    #[account(init, payer = signer, space = 8 + 8)]
+    #[account(init, payer = signer, space = 8 + 8 + 24+24)]
     pub new_account: Account<'info, MyAccount>,
     #[account(mut)]
     pub signer: Signer<'info>,
@@ -52,16 +55,21 @@ pub struct SetData<'info> {
 #[derive(Default)]
 pub struct MyAccount {
     data: u64,
+    name: String,
+    items: Vec<String>,
 }
 
 #[derive(Accounts)]
-pub struct Todo<'info> {
+pub struct AddItem<'info> {
+    // #[account(init, payer = signer, space = 8 )]
     #[account(mut)]
-    pub todolist: Account<'info, ToDoList>,
+    pub acc: Account<'info, MyAccount>,
+    // pub item: Account<'info, ToDoList>,
+    // pub signer: Signer<'info>,
 }
 
-#[account]
-#[derive(Default)]
-pub struct ToDoList {
-    item: Vec<String>,
-}
+// #[account]
+// #[derive(Default)]
+// pub struct ToDoList {
+//     item: u64,
+// }

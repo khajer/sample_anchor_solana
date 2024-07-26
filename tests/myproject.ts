@@ -36,4 +36,15 @@ describe("myproject", () => {
     console.log((myAcc).data);
 
   })
+  it("add test todo list", async () => {
+    const tx = await program.methods.addTodo("test1").accounts({
+      acc: myAccount.publicKey,
+
+    }).rpc();
+    console.log("Your transaction signature", tx);
+
+    const myAcc = await program.account.myAccount.fetch(myAccount.publicKey);
+    console.log((myAcc).items);
+
+  })
 });
