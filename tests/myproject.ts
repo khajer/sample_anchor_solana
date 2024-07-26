@@ -1,6 +1,7 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Program } from "@coral-xyz/anchor";
 import { Myproject } from "../target/types/myproject";
+import { assert, expect } from "chai";
 
 const { SystemProgram, PublicKey } = anchor.web3;
 const provider = anchor.AnchorProvider.local();
@@ -45,6 +46,29 @@ describe("myproject", () => {
 
     const myAcc = await program.account.myAccount.fetch(myAccount.publicKey);
     console.log((myAcc).items);
+    expect(myAcc.items.length).equal(1);
 
+  })
+  it("should return 3 when i add 3 element (old 1 and new 2)", async () => {
+    await program.methods.addTodo("test2").accounts({
+      acc: myAccount.publicKey,
+
+    }).rpc();
+    await program.methods.addTodo("test3").accounts({
+      acc: myAccount.publicKey,
+    }).rpc();
+
+    const myAcc = await program.account.myAccount.fetch(myAccount.publicKey);
+    console.log((myAcc).items);
+    expect(myAcc.items.length).equals(3);
+  })
+  it("should return 2 when i remove element", async () => {
+    await program.methods.removeTodoFirst().accounts({
+      acc: myAccount.publicKey,
+    }).rpc();
+
+    const myAcc = await program.account.myAccount.fetch(myAccount.publicKey);
+    console.log((myAcc).items);
+    expect(myAcc.items.length).equals(2);
   })
 });

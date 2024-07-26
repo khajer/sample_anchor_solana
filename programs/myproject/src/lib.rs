@@ -29,7 +29,14 @@ pub mod myproject {
     pub fn add_todo(ctx: Context<AddItem>, task: String) -> Result<()> {
         let todo_account = &mut ctx.accounts.acc;
         todo_account.items.push(task);
-
+        Ok(())
+    }
+    pub fn remove_todo_first(ctx: Context<AddItem>) -> Result<()> {
+        let todo_account = &mut ctx.accounts.acc;
+        // todo_account.items.retain(|x| x != &"test1".to_string());
+        todo_account.items.remove(0);
+        // todo_account.items = vec![];
+        // todo_account.items.push("task".to_string());
         Ok(())
     }
 }
