@@ -62,7 +62,7 @@ describe("myproject", () => {
     console.log((myAcc).items);
     expect(myAcc.items.length).equals(3);
   })
-  it("should return 2 when i remove element", async () => {
+  it("should return 2 when I remove element", async () => {
     await program.methods.removeTodoFirst().accounts({
       acc: myAccount.publicKey,
     }).rpc();
@@ -70,5 +70,26 @@ describe("myproject", () => {
     const myAcc = await program.account.myAccount.fetch(myAccount.publicKey);
     console.log((myAcc).items);
     expect(myAcc.items.length).equals(2);
+  })
+  it("should return 0 when I call clear rpc", async () => {
+    await program.methods.clearAll().accounts({
+      acc: myAccount.publicKey,
+    }).rpc();
+
+    const myAcc = await program.account.myAccount.fetch(myAccount.publicKey);
+    console.log((myAcc).items);
+    expect(myAcc.items.length).equals(0);
+  })
+
+  it("another account should not receive data when I change account", async () => {
+    const other = anchor.web3.Keypair.generate();
+    const tx = await program.methods.initialize(new anchor.BN(4343234234)).accounts({
+      newAccount: other.publicKey,
+      signer: provider.wallet.publicKey
+    }).signers([other]).rpc();
+
+    const acc = await program.account.myAccount.fetch(other.publicKey);
+    console.log((acc).items);
+    expect(acc.items.length).equals(0);
   })
 });

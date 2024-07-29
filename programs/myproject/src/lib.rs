@@ -39,6 +39,12 @@ pub mod myproject {
         // todo_account.items.push("task".to_string());
         Ok(())
     }
+
+    pub fn clear_all(ctx: Context<Item>) -> Result<()> {
+        let todo_account = &mut ctx.accounts.acc;
+        todo_account.items.clear();
+        Ok(())
+    }
 }
 #[derive(Accounts)]
 pub struct SetAcc<'info> {
@@ -75,8 +81,10 @@ pub struct AddItem<'info> {
     // pub signer: Signer<'info>,
 }
 
-// #[account]
-// #[derive(Default)]
-// pub struct ToDoList {
-//     item: u64,
-// }
+#[derive(Accounts)]
+pub struct Item<'info> {
+    #[account(mut)]
+    pub acc: Account<'info, MyAccount>,
+    // pub item: Account<'info, ToDoList>,
+    // pub signer: Signer<'info>,
+}
